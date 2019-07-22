@@ -1,0 +1,119 @@
+.story {
+	width: 75%;
+	margin: 0 auto;
+	box-shadow: 0 3rem 6rem rgba($color-black, .1);
+	// u trecem koraku kada dodajemo video zbog njega 
+	//stavljamo opacity
+	background-color: rgba($color-white, .6);
+	border-radius: 3px;
+	padding: 6rem;
+	//ovim dodajemo 3rem padingu levo koja smo 
+	// dole dadali translateX
+	padding-left: 9rem;
+	font-size: $default-font-size;
+	transform: skewX(-12deg);
+
+
+	
+	@include respond(tab-port) {
+		width: 100%;
+		padding: 4rem;
+		padding-left: 7rem;
+	}
+
+	@include respond(phone) {
+		transform: skewX(0);
+	}
+
+	&__shape {
+		width: 15rem;
+		height: 15rem;
+		//ovak background koristimo samo da bi smo konstrisali kruznicu
+		//posto kasnije dodajem sliku
+		//background-color: orangered;
+		float: left;
+		border-radius: 50%;
+		
+		
+
+
+		//ovim odvajamo vise krug od teksta sa translateX
+		// a skew dodajemo da nam vrati iskrivljenu sliku 
+		//zbog pomeranja transform: skewX(-12deg); celeog elementa
+
+		transform: translateX(-3rem) skewX(12deg);
+		position: relative;
+
+		overflow: hidden;
+
+		@supports (clip-path: polygon(0 0) or (-webkit-clip-path: polygon(0 0))) {
+			//crtamo i krug
+			-webkit-clip-path: circle(50% at 50% 50%);
+			clip-path: circle(50% at 50% 50%);
+			-webkit-shape-outside: circle(50% at 50% 50%);
+			shape-outside: circle(50% at 50% 50%);
+			border-radius: none;
+		}
+
+		@include respond(phone) {
+			transform: translateX(-3rem) skewX(0);
+		}
+	}
+
+	&__img {
+		//SLIKI DA BI JE VIDELI KAKO HOCEMO UVEK BEZ IZUZETKA MORAMO DA
+		// DA DAMO SIRINU ili VISINU (sto je u nasem slucaju)!!!
+		//dajemo sirinu od 100% zato sto je stastavni deo figuare elementa 
+		// i tako preuzima roditeljsku visinu
+
+		height: 100%;
+
+		// postavljamo malo vise u centar sa translateX
+		// scale() nam sluzi za postavljane efekta uvlacenja(animacije)
+
+		transform: translateX(-4rem) scale(1.4);
+		backface-visibility: hidden;
+		transition: all .5s;
+	}
+
+	&__text {
+		// a skew dodajemo da nam vrati iskrivljenu sliku 
+		//zbog pomeranja transform: skewX(-12deg); celeog elementa
+
+		transform: skewX(12deg);
+
+		@include respond(phone) {
+			transform: skewX(0);
+		}
+	}
+
+	&__caption {
+		// stavljamo ime u sredinu slike
+		position: absolute;
+		top: 50%;
+		left:50%;
+		//ovih 20% dole na Y ce nam dati kasnije onaj efekat pojavljivanja
+		//od dole
+		transform: translate(-50%, 20%);
+		color: $color-white;
+		font-size: 1.7rem;
+		text-align: center;
+		//sklanjamo ime
+		opacity: 0;
+		transition: all .5s;
+		//da nam se ne trese :-)
+		backface-visibility: hidden;
+	}
+
+	//da nam se pojavi natpis na slici kada hoverujemo nasu sekciju
+
+	&:hover &__caption {
+		opacity: 1;
+		transform: translate(-50%, -50%);
+	}
+
+	&:hover &__img {
+		transform: translateX(-4rem) scale(1);
+		filter: blur(3px) brightness(80%);
+	}
+}

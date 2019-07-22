@@ -1,0 +1,211 @@
+.navigation {
+	&__checkbox {
+		display: none;
+	}
+	//preklapamo nas dole krug
+	&__button {
+		background-color: $color-white;
+		height: 7rem;
+		width: 7rem;
+		position: fixed;
+		top: 6rem;
+		right: 6rem;
+		border-radius: 50%;
+		z-index: 2000;
+		box-shadow: 0 1rem 3rem rgba($color-black, .1);
+		//ovo nam stavlja nas hamburger u centralnu poziciju kruga 
+		//ali ga dole jos potrebno spustiti
+		text-align: center;
+		cursor: pointer;
+
+		@include respond(tab-port) {
+			top: 4rem;
+			right: 4rem;
+		}
+
+		@include respond(phone) {
+			top: 3rem;
+			right: 3rem;
+		}
+	}
+
+	&__background {
+		height: 6rem;
+		width: 6rem;
+		border-radius: 50%;
+		position: fixed;
+		top: 6.5rem;
+		right: 6.5rem;
+		background-image: radial-gradient($color-primary-light, $color-primary-dark);
+		z-index: 1000; 
+		//ov nam stavlja navbar u  prvi plan
+		//kasnij ga premestamo
+		//transform: scale(80);
+
+		//ovo nam prilikom klika daje onaj efekat sirenja 
+		//poput radio talasa
+		//cubic-bezier nam odredjuje rapored transizije u vremenu
+		// od .8s na sajtu esaing.net vidimo koji nam najvise odgovara
+		transition: transform .8s cubic-bezier(0.86, 0, 0.07, 1);
+	
+		@include respond(tab-port) {
+			top: 4.5rem;
+			right: 4.5rem;
+		}
+
+		@include respond(phone) {
+			top: 3.5rem;
+			right: 3.5rem;
+		}
+		
+	}
+
+	&__nav {
+		height: 100vh;
+		width: 100%;
+		position: fixed;
+		top: 0;
+		// right: 0;
+		//kada premestimo na levu odatle ce nam doci i animacija
+		left:0;
+		z-index: 1500;
+		// na ovaj nacin sakrivamo navbar, stavljanjem width 0 i opacity:  0
+		//nije nam dovoljno da postavimo samo opacity posto on sakrije navbar 
+		// ali i dalje je prisutan na stranici i imamo hover
+		opacity: 0;
+		width: 0;
+		//ovo isto potomaze efektu "radio talasa"
+		transition: all .8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	}
+
+	&__list {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		list-style: none;
+		text-align: center;
+		width: 100%;
+	}
+
+	&__item {
+		margin: 1rem;
+	}
+
+	&__link {
+
+		&:link,
+		&:visited {
+			display: inline-block;
+			font-size: 3rem;
+			font-weight: 300;
+			padding: 1rem 2rem;
+			color: $color-white;
+			text-decoration: none;
+			text-transform: uppercase;
+			//kada pravimo naravno umesto transparent stavimo
+			// vidljivu boju omiljenu orangered
+			background-image: linear-gradient(120deg, transparent 0%, transparent 50%, $color-white 50%);
+			//ovo nam pomera $color-white skroz u levo
+			background-size: 220%;
+			transition: all 0.4s;
+
+			span {
+				margin-right: 1.5rem;
+				display: inline-block;
+			}
+		}
+
+
+		&:hover,
+		&:active {
+			//a ovo nam vraca $color-white
+			background-position: 100%;
+			color: $color-primary;
+			transform: translateX(1rem);
+		}
+		
+	}
+
+	//ovako omogucavao vidljivost naseg navbara na klik
+
+	&__checkbox:checked ~ &__background {
+		transform: scale(80);
+	}
+
+	&__checkbox:checked ~ &__nav {
+		opacity: 1;
+		width: 100%;
+	}
+
+	//ICON HAMBURGER
+
+	// ovde pravimo nas hamburger meni
+	// uz pomoc pseudo klasa before i after
+	// dodajemo i "lepinju", pljeska je u HTML-u
+
+	&__icon {
+		position: relative;
+		// u saradnji sa forem text-align:center;
+		//nam daje centriranu poziciju
+		margin-top: 3.5rem;
+
+		// lepinja
+		&,
+		&::before,
+		&::after {
+			width: 3rem;
+			height: 2px;
+			background-color: $color-grey-dark-3;
+			display: inline-block;
+		}
+
+		&::before,
+		&::after {
+			content: "";
+			position: absolute;
+			left:0;
+			transition: all .2s;
+		}
+
+		&::before {
+			top: -.8rem;
+		}
+
+		&::after {
+			top: .8rem;
+		}
+	}
+
+	&__button:hover &__icon::before {
+		top: -1rem;
+	}
+
+	&__button:hover &__icon::after {
+		top: 1rem;
+	}
+
+	//pravjenje X
+
+	&__checkbox:checked ~ &__button &__icon {
+		// ovo nam sakriva srednju liniju
+		background-color: transparent;
+	}
+
+	&__checkbox:checked ~ &__button &__icon::before {
+		//ovo nam rotira u X
+		top: 0;
+		// transform: rotate(45deg);
+		//ovo nam daje lepse dramaticnije rotiranje
+		transform: rotate(135deg);
+	}
+
+	&__checkbox:checked ~ &__button &__icon::after {
+		// ovo nam rotira u X
+		top: 0;
+		// transform: rotate(-45deg);
+
+		//ovo nam daje lepse dramaticnije rotiranje
+		transform: rotate(-135deg);
+	}
+}
